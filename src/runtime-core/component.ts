@@ -2,8 +2,7 @@ import { initProps } from "./componentProps";
 import { initSlots } from "./componentSlots";
 import { emit } from "./componentEmits";
 import { PublicInstanceProxyHandlers } from "./componentPublicInstance";
-import { proxyRefs } from "@vue/reactivity";
-import { shallowReadonly } from "@vue/reactivity";
+import { proxyRefs, shallowReadonly } from "../reactivity/src";
 export function createComponentInstance(vnode, parent) {
   const instance = {
     type: vnode.type,
@@ -81,6 +80,8 @@ function setupStatefulComponent(instance) {
 
     // 3. 处理 setupResult
     handleSetupResult(instance, setupResult);
+  } else {
+    finishComponentSetup(instance);
   }
 }
 
@@ -138,11 +139,12 @@ function finishComponentSetup(instance) {
 function applyOptions() {
   // 兼容 vue2.x
   // todo
+  // options api
 }
 
 let currentInstance = {};
 // 这个接口暴露给用户，用户可以在 setup 中获取组件实例 instance
-export function getCurrentInstance() {
+export function getCurrentInstance(): any {
   return currentInstance;
 }
 
